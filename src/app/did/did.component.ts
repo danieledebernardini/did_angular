@@ -93,18 +93,10 @@ export class DidComponent implements OnInit {
         birth: [dob.value, place.value + ', ' + country.value]
     };
 
-		console.log(this.data);
+		// Byte conversion
+    const data = JSON.stringify(this.data);
 
-		// Compression
-		//const data = this.didService.compress(this.data);
-		const data = JSON.stringify(this.data);
-
-		// Checking validity
-		if(!this.didService.checkBytes(data)) {
-			throw new Error('Data length exceedes max length (256 bytes).');
-		}
-
-		return data;
+		return this.didService.jsonToBytes(data);
 	}
 
 	/**
@@ -141,42 +133,43 @@ export class DidComponent implements OnInit {
 				break;
 		}
 
-		// Compression
-		//const didDoc = this.didService.compress(this.didDoc);
+		// Byte conversion
 		const didDoc = JSON.stringify(this.didDoc);
 
-		// Checking validity
-		if(!this.didService.checkBytes(didDoc)) {
-			throw new Error('DiD document length exceedes max length (256 bytes).');
-		}
-		
-		return didDoc;
+		return this.didService.jsonToBytes(didDoc);
 	}
 
 	/**
 	 * Implementation of the DIDSet transation. 
 	 */
-	async setDiD() {
+	async setDid() {
 		
 		// Connecting to Client
 		const client = new Client(this.net);
 		await client.connect();
 		console.log('Client connected...');
 
-		console.log(this.didService.jsonToURI(JSON.stringify(this.data)));
-
-		// Preparing transaction
-		this.transaction['TransactionType'] = 'DIDSet';
-
-		/*
-		// Submitting transation
 		try {
-			const result = await client.submit(setDiD, this.wallet);
-			console.log(result)
-		} catch (error) {
-			console.error(`Failed to submit transaction: ${error}`)
+			// Preparing transaction
+			this.transaction['TransactionType'] = 'DIDSet';
+			this.transaction['Data'] = this.fillData();
+			this.transaction['DIDDocument'] = this.fillDidDocument(0);
+			this.transaction['URI'] = this.didService.jsonToURI(
+																	this.transaction['Data']);
+
+			//const transaction = await client.autofill(this.transaction);
+
+			// Submitting transation
+			const result = await client.submitAndWait(
+											this.transaction, { 
+												autofill: true, 
+												wallet: this.wallet 
+											});
+			console.log(result);
+		} catch(error: any) {
+			console.error('Error: ', error.message);
 		}
-		*/
+
 
 		// Disconnecting from client
 		client.disconnect();
@@ -186,7 +179,7 @@ export class DidComponent implements OnInit {
 	/**
 	 * Implementation of the DIDDelete transaction.
 	 */
-	async deleteDiD() {
+	async deleteDid() {
 		
 		// Connecting to Client
 		const client = new Client(this.net);

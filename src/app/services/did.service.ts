@@ -101,6 +101,45 @@ export class DidService {
 	getTransaction() {
 		return this.transaction;
 	}
+	
+	/**
+	 * Given a JSON variable json, returns its byte representation as string.
+	 */
+	jsonToBytes(json: string): string {
+
+		// Convert JSON string to hexadecimal string
+		const hexString = stringToHex(json);
+
+		// Convert hexadecimal string to Uint8Array
+		const bytes = new Uint8Array(hexToBytes(hexString));
+
+		// Error handling
+		if (bytes.length > 256) {
+				throw new Error(
+						'[jsonToBytes] Input byte length (' + bytes.length
+						+ ') exceeds max length (256 bytes).');
+		}
+
+		// Convert Uint8Array to array of numbers
+		const byteValues = Array.from(bytes);
+
+		// Convert array of numbers to string representation
+		return String.fromCharCode.apply(null, byteValues);
+	}
+
+	/**
+	 * Converts a given string to a byte array and checks if it is a valid string
+	 * (less than 256 bytes long).
+	 */
+	/*
+	checkBytes(data: string): boolean {
+		
+		const bytes = hexToBytes(stringToHex(data));
+		console.log('[checkBytes] bytes = ' + bytes.length);
+
+		return bytes.length <= 256;
+	}	
+	*/
 
 	/**
 	 * Compresses a JSON variable into a string
@@ -131,18 +170,6 @@ export class DidService {
 	*/
 
 	/**
-	 * Converts a given string to a byte array and checks if it is a valid string
-	 * (less than 256 bytes long).
-	 */
-	checkBytes(data: string): boolean {
-		
-		const bytes = hexToBytes(stringToHex(data));
-		console.log('[checkBytes] bytes = ' + bytes.length);
-
-		return bytes.length <= 256;
-	}
-
-	/**
 	 * Returns a string for the current date, formatted as an XML Datetime
 	 * normalized to UTC 00:00:00 and without sub-second decimal precision. 
 	 */
@@ -161,13 +188,8 @@ export class DidService {
 	jsonToURI(json: string): string {
 
 		const uri = 'did/json;base64,' + btoa(json);
-		const validURI = this.checkBytes(uri);
 
-		// Error handling
-		if(!validURI) {
-			throw new Error('URI length exceedes max length (256 bytes).');
-		}
-		
-		return uri;
+		// Byte conversion
+		return this.jsonToBytes(uri);
 	}
 }

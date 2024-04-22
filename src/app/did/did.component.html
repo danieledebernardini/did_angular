@@ -29,7 +29,7 @@
 
 		<div class="form-row">
 			<div class="form-group">
-				<label for="place"> Place: </label>
+				<label for="place"> Place of Birth: </label>
 				<input type="text" id="place" name="place" required>
 			</div>
 			<div class="form-group">
@@ -44,14 +44,14 @@
 		</div>
 	</form>
 
-	<button (click)="fillData()" class="set">
+	<button (click)="setDid()" class="set">
 		Generate DiD
 	</button>
 
 
 	<hr><!-------------------------------------------------------------------->
 
-	<button (click)="deleteDiD()" class="delete" disabled="true">
+	<button (click)="deleteDid()" class="delete" disabled="true">
 		Delete DiD
 	</button>
 	<button (click)="logout()" class="logout">
