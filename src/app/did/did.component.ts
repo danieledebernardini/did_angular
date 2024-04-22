@@ -87,10 +87,13 @@ export class DidComponent implements OnInit {
 		const place = <HTMLInputElement> document.getElementById('place');
 		const country = <HTMLInputElement> document.getElementById('country');
 
-		this.data.anagraphic['name'] = name.value;
-		this.data.anagraphic['surname'] = surname.value;
-		this.data.anagraphic['birth'][0] = dob.value;
-		this.data.anagraphic['birth'][1] = place.value + ', ' + country.value;
+		this.data.anagraphic = {
+        name: name.value,
+        surname: surname.value,
+        birth: [dob.value, place.value + ', ' + country.value]
+    };
+
+		console.log(this.data);
 
 		// Compression
 		//const data = this.didService.compress(this.data);
