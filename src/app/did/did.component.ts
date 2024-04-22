@@ -13,7 +13,7 @@ import { WalletService } from '../services/wallet.service';
 	templateUrl: './did.component.html',
 	styleUrl: './did.component.css'
 })
-export class DidComponent {
+export class DidComponent implements OnInit {
 	
 	readonly net = 'wss://s.altnet.rippletest.net:51233';
 	
@@ -26,9 +26,9 @@ export class DidComponent {
 
 
 	constructor(
+		private didService: DidService,
 		private router: Router, 
 		private walletService: WalletService,
-		private didService: DidService
 	) {	}
 
 	ngOnInit() {
@@ -64,12 +64,48 @@ export class DidComponent {
 		client.disconnect();
 	}
 
+	validateForm(form: HTMLFormElement): boolean {
+
+		// Checking validity
+		const isValid = form.checkValidity();
+
+		// If isValid == false, highlight missing inputs
+		if(!isValid) {
+			alert('All fields must be non-empty.');
+		}
+
+		return isValid;
+	}
+
 	/**
 	 * Fills the data fields accordingly to what has been specified in the HTML
 	 * inputs and returns the JSON as string.
 	 */
 	fillData(): string {
-		return JSON.stringify(this.data);
+
+		// Anagraphic form
+		const form = <HTMLFormElement> document.getElementById('anagraphic');
+		const isValid = form.checkValidity();
+
+		// Checking form's validity
+		if(!form.checkValidity()) {
+			alert('All fields must be non-empty.');
+			throw new Error('Empty input in "anagrphic" form.');
+		}
+		
+		// Setting fields
+
+
+		// Compression
+		//const data = this.didService.compress(this.data);
+		const data = JSON.stringify(this.data);
+
+		// Checking validity
+		if(!this.didService.checkBytes(data)) {
+			throw new Error('Data length exceedes max length (256 bytes).');
+		}
+
+		return data;
 	}
 
 	/**
@@ -87,9 +123,7 @@ export class DidComponent {
 
 		// Checking input's validity
 		if (![0, 1, 2].includes(type)) {
-			
-			console.error('Selected type ' + type + ' is not valid.');
-			return ''; 
+			throw new Error('Selected type ' + type + ' is not valid.');
 		}
 
 		const isoDateTime = this.didService.getUTC00DateTime();	//Current datetime
@@ -113,14 +147,11 @@ export class DidComponent {
 		const didDoc = JSON.stringify(this.didDoc);
 
 		// Checking validity
-		const validDidDoc = this.didService.checkBytes(didDoc);
-
-		if(validDidDoc) {
-			return didDoc;
-		} else {
-			console.error('DiD document length exceedes max length (256 bytes).');
-			return '';
+		if(!this.didService.checkBytes(didDoc)) {
+			throw new Error('DiD document length exceedes max length (256 bytes).');
 		}
+		
+		return didDoc;
 	}
 
 	/**

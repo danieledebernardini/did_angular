@@ -8,33 +8,33 @@
 
 	<hr><!-------------------------------------------------------------------->
 
-	<form id="anagrphic">
+	<form id="anagraphic">
 		<div class="form-row">
 			<div class="form-group">
 				<label for="name"> Name: </label>
-				<input type="text" id="name" name="name">
+				<input type="text" id="name" name="name" required>
 			</div>
 			<div class="form-group">
 				<label for="surname"> Surname: </label>
-				<input type="text" id="surname" name="surname">
+				<input type="text" id="surname" name="surname" required>
 			</div>
 		</div>
 
 		<div class="form-row">
 			<div class="form-group">
 				<label for="dob"> Date of Birth: </label>
-				<input type="date" id="dob" name="dob">
+				<input type="date" id="dob" name="dob" required>
 			</div>
 		</div>
 
 		<div class="form-row">
 			<div class="form-group">
 				<label for="place"> Place: </label>
-				<input type="text" id="place" name="place">
+				<input type="text" id="place" name="place" required>
 			</div>
 			<div class="form-group">
 				<label for="country"> Country: </label>
-				<select id="country" name="country">
+				<select id="country" name="country" required>
 					<option value=""> Select Country </option>
 					<option value="IT"> Italy </option>
 					<option value="UK"> United Kingdom </option>
@@ -44,7 +44,7 @@
 		</div>
 	</form>
 
-	<button (click)="fillDidDocument(0)" class="set">
+	<button (click)="fillData()" class="set">
 		Generate DiD
 	</button>
 

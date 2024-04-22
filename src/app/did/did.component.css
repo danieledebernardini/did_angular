@@ -30,7 +30,6 @@ select {
 	border-radius: 4px;
 	box-sizing: border-box;
 }
-
 /*
 input[type="submit"] {
 	background-color: #007bff;
@@ -44,6 +43,10 @@ input[type="submit"]:hover {
 	background-color: #0056b3;
 }
 */
+/* Style for invalid inputs */
+input:invalid, select:invalid {
+	border-color: red;
+}
 
 button {
 	padding: 10px 20px;
