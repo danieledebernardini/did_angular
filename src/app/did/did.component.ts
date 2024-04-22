@@ -44,7 +44,7 @@ export class DidComponent {
 		this.getBalance(this.wallet.classicAddress);
 
 		this.didDoc.id = "did:xrpl:1:" + this.wallet.classicAddress;
-		this.didDoc.publicKey.id = "did:xrpl:1:" + this.wallet.classicAddress;
+		//this.didDoc.publicKey.id = "did:xrpl:1:" + this.wallet.classicAddress;
 		
 		this.transaction['Account'] = this.wallet.classicAddress;
 	}
@@ -97,19 +97,22 @@ export class DidComponent {
 		// Setting fields
 		switch(type) {
 			case 0:
-				this.didDoc.metadata['created'] = isoDateTime;
+				//this.didDoc.metadata['created'] = isoDateTime;
 				this.didDoc.publicKey['publicKeyHex'] = this.wallet.publicKey;
 				break;
 			case 1:
-				this.didDoc.metadata['updated'] = isoDateTime;
+				//this.didDoc.metadata['updated'] = isoDateTime;
 				break;
 			case 2:
-				this.didDoc.metadata['deactivated'] = isoDateTime;
+				//this.didDoc.metadata['deactivated'] = isoDateTime;
 				break;
 		}
 
-		// Checking validity
+		// Compression
+		//const didDoc = this.didService.compress(this.didDoc);
 		const didDoc = JSON.stringify(this.didDoc);
+
+		// Checking validity
 		const validDidDoc = this.didService.checkBytes(didDoc);
 
 		if(validDidDoc) {
