@@ -163,11 +163,11 @@ export class DidService {
 		const uri = 'did/json;base64,' + btoa(json);
 		const validURI = this.checkBytes(uri);
 
-		if(validURI) {
-			return uri;
-		} else {
-			console.error('URI length exceedes max length (256 bytes).');
-			return '';
+		// Error handling
+		if(!validURI) {
+			throw new Error('URI length exceedes max length (256 bytes).');
 		}
+		
+		return uri;
 	}
 }
