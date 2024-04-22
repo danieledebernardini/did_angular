@@ -30,10 +30,10 @@ export class HomeComponent {
 		// Retrieving seed
 		const seed = <HTMLInputElement> document.getElementById('seed');
 		//Example: 
-		//- Address 				r5GB8tcTLabFYckmqphgphXnHw4PhC2nx
-		//- Secret					sEd7KPMBiHEvsDxXgNM5Wzi52KAcxzx
+		//- Address 				rpkQ3shLpbNXBCiSvFMwpZNUVURvtL9pCY
+		//- Secret					sEdVYN6svVKbJFmceerYLN1JRqCaMyz
 		//- Balance					100 XRP
-		//- Sequence Number	47089821
+		//- Sequence Number	58963
 
 		// Connecting to Client
 		const client = new Client(this.net);
