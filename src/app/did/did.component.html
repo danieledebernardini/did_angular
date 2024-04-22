@@ -1,0 +1,60 @@
+<div class="container">
+	<p> 
+		Address: <b> {{wallet.classicAddress}} XRP </b>
+	</p>
+	<p>
+		Balance: <b> {{balance}} </b>
+	</p>
+
+	<hr><!-------------------------------------------------------------------->
+
+	<form id="anagrphic">
+		<div class="form-row">
+			<div class="form-group">
+				<label for="name"> Name: </label>
+				<input type="text" id="name" name="name">
+			</div>
+			<div class="form-group">
+				<label for="surname"> Surname: </label>
+				<input type="text" id="surname" name="surname">
+			</div>
+		</div>
+
+		<div class="form-row">
+			<div class="form-group">
+				<label for="dob"> Date of Birth: </label>
+				<input type="date" id="dob" name="dob">
+			</div>
+		</div>
+
+		<div class="form-row">
+			<div class="form-group">
+				<label for="place"> Place: </label>
+				<input type="text" id="place" name="place">
+			</div>
+			<div class="form-group">
+				<label for="country"> Country: </label>
+				<select id="country" name="country">
+					<option value=""> Select Country </option>
+					<option value="IT"> Italy </option>
+					<option value="UK"> United Kingdom </option>
+					<!-- Add more countries... -->
+				</select>
+			</div>
+		</div>
+	</form>
+
+	<button (click)="fillDidDocument(0)" class="set">
+		Generate DiD
+	</button>
+
+
+	<hr><!-------------------------------------------------------------------->
+
+	<button (click)="deleteDiD()" class="delete" disabled="true">
+		Delete DiD
+	</button>
+	<button (click)="logout()" class="logout">
+		Logout
+	</button>
+</div>

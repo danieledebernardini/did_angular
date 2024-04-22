@@ -18,8 +18,11 @@
     "@angular/platform-browser": "^17.3.0",
     "@angular/platform-browser-dynamic": "^17.3.0",
     "@angular/router": "^17.3.0",
+    "@xrplf/isomorphic": "^1.0.0",
+    "ripple-keypairs": "^2.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "xrpl": "^3.0.0",
     "zone.js": "~0.14.3"
   },
   "devDependencies": {
