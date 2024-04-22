@@ -14,8 +14,8 @@ export class DidService {
 			"name" : string;
 			"surname" : string;
 			"birth" : [
-				string,
-				string
+				string,		//Date
+				string		//Place
 			];
 		};
 	};

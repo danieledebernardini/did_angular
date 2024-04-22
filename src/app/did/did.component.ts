@@ -64,19 +64,6 @@ export class DidComponent implements OnInit {
 		client.disconnect();
 	}
 
-	validateForm(form: HTMLFormElement): boolean {
-
-		// Checking validity
-		const isValid = form.checkValidity();
-
-		// If isValid == false, highlight missing inputs
-		if(!isValid) {
-			alert('All fields must be non-empty.');
-		}
-
-		return isValid;
-	}
-
 	/**
 	 * Fills the data fields accordingly to what has been specified in the HTML
 	 * inputs and returns the JSON as string.
@@ -94,7 +81,16 @@ export class DidComponent implements OnInit {
 		}
 		
 		// Setting fields
+		const name = <HTMLInputElement> document.getElementById('name');
+		const surname = <HTMLInputElement> document.getElementById('surname');
+		const dob = <HTMLInputElement> document.getElementById('dob');
+		const place = <HTMLInputElement> document.getElementById('place');
+		const country = <HTMLInputElement> document.getElementById('country');
 
+		this.data.anagraphic['name'] = name.value;
+		this.data.anagraphic['surname'] = surname.value;
+		this.data.anagraphic['birth'][0] = dob.value;
+		this.data.anagraphic['birth'][1] = place.value + ', ' + country.value;
 
 		// Compression
 		//const data = this.didService.compress(this.data);
