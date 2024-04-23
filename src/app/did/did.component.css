@@ -44,7 +44,7 @@ input[type="submit"]:hover {
 }
 */
 /* Style for invalid inputs */
-input:invalid, select:invalid {
+input:invalid:not([disabled]), select:invalid:not([disabled]) {
 	border-color: red;
 }
 

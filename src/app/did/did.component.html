@@ -5,6 +5,9 @@
 	<p>
 		Balance: <b> {{balance}} </b>
 	</p>
+	<p>
+		DID: <b> {{did}} </b>
+	</p>
 
 	<hr><!-------------------------------------------------------------------->
 
@@ -44,14 +47,13 @@
 		</div>
 	</form>
 
-	<button (click)="setDid()" class="set">
+	<button (click)="setDid()" class="set" id="genDid">
 		Generate DiD
 	</button>
 
-
 	<hr><!-------------------------------------------------------------------->
 
-	<button (click)="deleteDid()" class="delete" disabled="true">
+	<button (click)="deleteDid()" class="delete" id="delDid">
 		Delete DiD
 	</button>
 	<button (click)="logout()" class="logout">

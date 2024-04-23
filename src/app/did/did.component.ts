@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Client, DIDSet, Wallet } from 'xrpl';
+import { Client, DIDSet, LedgerEntryRequest, Wallet } from 'xrpl';
 import { DidService } from '../services/did.service';
 import { WalletService } from '../services/wallet.service';
 
@@ -20,10 +20,15 @@ export class DidComponent implements OnInit {
 	wallet: any;
 	balance: any;
 
+	did: any;
 	data: any;
 	didDoc: any;
 	transaction: any;
 
+
+	/*
+	TODO: Move 'anagraphic' form to ngForm and modify accordingly the logic.
+	*/
 
 	constructor(
 		private didService: DidService,
@@ -31,37 +36,89 @@ export class DidComponent implements OnInit {
 		private walletService: WalletService,
 	) {	}
 
-	ngOnInit() {
+	async ngOnInit() {
 
 		// Getters
 		this.wallet = this.walletService.getWallet();
 
+		this.did = this.didService.getDid();
 		this.data = this.didService.getData();
 		this.didDoc = this.didService.getDidDocument();
 		this.transaction = this.didService.getTransaction();
 		
-		// Setters
-		this.getBalance(this.wallet.classicAddress);
-
+		// Static setters
 		this.didDoc.id = "did:xrpl:1:" + this.wallet.classicAddress;
 		//this.didDoc.publicKey.id = "did:xrpl:1:" + this.wallet.classicAddress;
-		
 		this.transaction['Account'] = this.wallet.classicAddress;
+
+		// Dynamic setters
+		const client = new Client(this.net);		//Connecting to client	
+		await client.connect();
+		console.log('Client connected...');
+
+		try {
+			await this.readBalance(client);
+			await this.readDid(client);
+		} catch(error: any) {
+			console.error('Error:', error.message);
+		}
+
+		client.disconnect();										// Disconnecting from client
+		console.log('...Client disconnected.');
+
+		// Disabling HTML elements
+		this.setDisabled();
 	}
 
 	/**
-	 * Gets balance from the given wallet and saves it in this.balance.
+	 * Depending on the value of this.did, defines the disabled logic of
+	 * 'anagraphic' form, 'Generate DID' button and 'Delete DID' button. In
+	 * particular:
+	 * - If this.did === '', the function disables the 'Delete DID' button;
+	 * - Otherwise, the function disables both 'anagraphic' form and 
+	 * 'Generate DID' button.
 	 */
-	async getBalance(address: string) {
+	setDisabled() {
 
-		// Connecting to Client
-		const client = new Client(this.net);
-		await client.connect();
+		const emptyDid = (this.did === '');
 
-		this.balance = await client.getXrpBalance(address);
+		// Anagraphic form
+		const form = <HTMLFormElement> document.getElementById('anagraphic');
 
-		// Disconnecting from client
-		client.disconnect();
+		for (let i = 0; i < form.elements.length; i++) {
+			const element = <HTMLInputElement> form.elements[i];
+			element.disabled = !emptyDid;
+		}
+
+		// Buttons
+		const genButton = <HTMLButtonElement> document.getElementById('genDid');
+		const delButton = <HTMLButtonElement> document.getElementById('delDid');
+
+		genButton.disabled = !emptyDid;
+		delButton.disabled = emptyDid;
+	}
+
+	/**
+	 * Gets balance from this.wallet and saves it in this.balance.
+	 */
+	async readBalance(client: any) {
+		this.balance = await client.getXrpBalance(this.wallet.classicAddress);
+	}
+
+	/**
+	 * Attempts to overwirte this.did if ledger_entry returned a valid DID.
+	 */
+	async readDid(client: any) {
+
+		const response = await client.request({
+			command: 'ledger_entry',
+			did: this.wallet.classicAddress,
+			ledger_index: 'validated',
+		});
+		console.log('[readDid] response:\n' + response);
+
+		// Setting did
+		this.did = "did:xrpl:1:" + this.wallet.classicAddress;
 	}
 
 	/**
@@ -76,7 +133,6 @@ export class DidComponent implements OnInit {
 
 		// Checking form's validity
 		if(!form.checkValidity()) {
-			alert('All fields must be non-empty.');
 			throw new Error('Empty input in "anagrphic" form.');
 		}
 		
@@ -88,13 +144,13 @@ export class DidComponent implements OnInit {
 		const country = <HTMLInputElement> document.getElementById('country');
 
 		this.data.anagraphic = {
-        name: name.value,
-        surname: surname.value,
-        birth: [dob.value, place.value + ', ' + country.value]
-    };
+				name: name.value,
+				surname: surname.value,
+				birth: [dob.value, place.value + ', ' + country.value]
+		};
 
 		// Byte conversion
-    const data = JSON.stringify(this.data);
+		const data = JSON.stringify(this.data);
 
 		return this.didService.jsonToBytes(data);
 	}
@@ -157,14 +213,20 @@ export class DidComponent implements OnInit {
 			this.transaction['URI'] = this.didService.jsonToURI(
 																	this.transaction['Data']);
 
-			console.log(this.transaction);
+			//const transaction = await client.autofill(this.transaction);
+			//const signedTransaction = this.wallet.sign(transaction);
 
 			// Submitting transation
-			const result = await client.submit(this.transaction, { 
+			const result = await client.submitAndWait(this.transaction, { 
 												autofill: true, 
 												wallet: this.wallet 
 											});
+			//const result = await client.submitAndWait(signedTransaction.tx_blob);
 			console.log(result);
+
+			// Refreshing balance
+			await this.readBalance(client);
+			await this.readDid(client);
 		} catch(error: any) {
 			console.error('Error:', error.message);
 			alert('Error: ' + error.message);
@@ -172,7 +234,10 @@ export class DidComponent implements OnInit {
 
 		// Disconnecting from client
 		client.disconnect();
-		console.log('...Client disconnected.')
+		console.log('...Client disconnected.');
+
+		// Disabling HTML elements
+		this.setDisabled();
 	}
 
 	/**

@@ -9,6 +9,8 @@ import { hexToBytes, stringToHex } from '@xrplf/isomorphic/utils';
 })
 export class DidService {
 
+	private did: string;
+
 	private data: {
 		"anagraphic" : {
 			"name" : string;
@@ -50,6 +52,9 @@ export class DidService {
 
 	constructor() {
 
+		// Instatiating did
+		this.did = "";
+
 		// Instantiating data
 		this.data = {
 			"anagraphic" : {
@@ -88,6 +93,10 @@ export class DidService {
 			"Data" : "",
 			"DIDDocument" : "",
 		};
+	}
+
+	getDid() {
+		return this.did;
 	}
 
 	getData() {
