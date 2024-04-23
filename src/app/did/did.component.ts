@@ -113,7 +113,8 @@ export class DidComponent implements OnInit {
 		// Requesting DID
 		await this.didService.requestDid(client, this.wallet.classicAddress);
 		
-		// Setting did
+		// Setting did 
+		// (performed only with no errors in request)
 		this.did = "did:xrpl:2:" + this.wallet.classicAddress;
 	}
 
@@ -214,21 +215,13 @@ export class DidComponent implements OnInit {
 												autofill: true, 
 												wallet: this.wallet 
 											});
-			/*
-			const result = await client.submitAndWait(
-					{
-						TransactionType: 'Payment',
-				    Account: this.wallet.classicAddress,
-				    Destination: 'rnoMjXTZ8mC3vPLt5FLyUpnbmc6a1NY2Sa',
-				    Amount: '10'
-					}, {autofill: true, wallet: this.wallet}
-				);
-			*/
 			console.log(result);
 
-			// Refreshing balance
+			// Refreshing balance and did
 			await this.readBalance(client);
 			await this.readDid(client);
+
+			alert('DiD has been generated!');
 		} catch(error: any) {
 			console.error('Error:', error.message);
 			alert('Error: ' + error.message);
@@ -250,15 +243,38 @@ export class DidComponent implements OnInit {
 		// Connecting to Client
 		const client = new Client(this.net);
 		await client.connect();
+		console.log('Client connected...');
 
-		// Preparing transation
-		// ...
+		try {
+			// Preparing transaction
+			this.transaction['TransactionType'] = 'DIDDelete';
+			const { TransactionType, Account } = this.transaction;
+			const transaction = { TransactionType, Account };
+			console.log(transaction);
 
-		// Submitting transaction
-		// ...
+			// Submitting transation
+			const result = await client.submitAndWait(transaction, { 
+												autofill: true, 
+												wallet: this.wallet 
+											});
+			console.log(result);
+			
+			// Refreshing balance and did
+			await this.readBalance(client);
+			this.did = "";
+
+			alert('DiD has been delted.');
+		} catch(error: any) {
+			console.error('Error:', error.message);
+			alert('Error: ' + error.message);
+		}
 
 		// Disconnecting from client
 		client.disconnect();
+		console.log('...Client disconnected.');
+
+		// Disabling HTML elements
+		this.setDisabled();
 	}
 
 	logout() {

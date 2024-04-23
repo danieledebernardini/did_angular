@@ -159,13 +159,15 @@ export class DidService {
 	 * Performs a ledger_entry request in order to retrieve a DID for the
 	 * specified address.
 	 */
-	async requestDid(client: any, address: string) {
+	async requestDid(client: any, address: string): Promise<any> {
 
 		const response = await client.request({
 			command: 'ledger_entry',
 			did: address,
 			ledger_index: 'validated',
 		});
-		console.log('[requestDid] Response:\n' + response);
+		console.log(response);
+
+		return response;
 	}
 }
