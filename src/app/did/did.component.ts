@@ -210,7 +210,7 @@ export class DidComponent implements OnInit {
 																	this.transaction['Data']);
 
 			// Submitting transation
-			const result = await client.submit(this.transaction, { 
+			const result = await client.submitAndWait(this.transaction, { 
 												autofill: true, 
 												wallet: this.wallet 
 											});
