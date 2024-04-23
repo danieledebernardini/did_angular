@@ -110,13 +110,9 @@ export class DidComponent implements OnInit {
 	 */
 	async readDid(client: any) {
 
-		const response = await client.request({
-			command: 'ledger_entry',
-			did: this.wallet.classicAddress,
-			ledger_index: 'validated',
-		});
-		console.log('[readDid] response:\n' + response);
-
+		// Requesting DID
+		await this.didService.requestDid(client, this.wallet.classicAddress);
+		
 		// Setting did
 		this.did = "did:xrpl:1:" + this.wallet.classicAddress;
 	}

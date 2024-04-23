@@ -133,48 +133,6 @@ export class DidService {
 	}
 
 	/**
-	 * Converts a given string to a byte array and checks if it is a valid string
-	 * (less than 256 bytes long).
-	 */
-	/*
-	checkBytes(data: string): boolean {
-		
-		const bytes = hexToBytes(stringToHex(data));
-		console.log('[checkBytes] bytes = ' + bytes.length);
-
-		return bytes.length <= 256;
-	}	
-	*/
-
-	/**
-	 * Compresses a JSON variable into a string
-	 */
-	/*
-	compress(data: any): string {
-
-		const zippedData = gzip(JSON.stringify(data));
-
-		// Convert compressed data (Uint8Array) to a string
-		return String.fromCharCode.apply(null, Array.from(zippedData));
-	}
-	*/
-
-	/**
-	 * Decompresses a string representing a JSON variable.
-	 */
-	/*
-	decompress(zippedStr: string): any {
-		
-		// Convert string to Uint8Array
-		const zippedData = new Uint8Array(
-												zippedStr.split('').map(char => char.charCodeAt(0)));
-		
-		// Decompress data and parse to JSON
-		return JSON.parse(inflate(zippedData, { to: 'string' }));
-	}
-	*/
-
-	/**
 	 * Returns a string for the current date, formatted as an XML Datetime
 	 * normalized to UTC 00:00:00 and without sub-second decimal precision. 
 	 */
@@ -195,5 +153,19 @@ export class DidService {
 
 		// Byte conversion
 		return this.jsonToBytes(uri);
+	}
+
+	/**
+	 * Performs a ledger_entry request in order to retrieve a DID for the
+	 * specified address.
+	 */
+	async requestDid(client: any, address: string) {
+
+		const response = await client.request({
+			command: 'ledger_entry',
+			did: address,
+			ledger_index: 'validated',
+		});
+		console.log('[requestDid] Response:\n' + response);
 	}
 }
