@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { hexToBytes, stringToHex } from '@xrplf/isomorphic/utils';
-import { gzip, inflate } from 'pako';
+//import { gzip, inflate } from 'pako';
 
 
 @Injectable({
@@ -110,21 +110,17 @@ export class DidService {
 		// Convert JSON string to hexadecimal string
 		const hexString = stringToHex(json);
 
-		// Convert hexadecimal string to Uint8Array
-		const bytes = new Uint8Array(hexToBytes(hexString));
-
 		// Error handling
+		const bytes = new Uint8Array(hexToBytes(hexString));	//Convert hex string
+																													//to Uint8Array
 		if (bytes.length > 256) {
 				throw new Error(
-						'[jsonToBytes] Input byte length (' + bytes.length
-						+ ') exceeds max length (256 bytes).');
+					'[jsonToBytes] Input byte length (' + bytes.length
+					+ ') exceeds max length (256 bytes).'
+				);
 		}
 
-		// Convert Uint8Array to array of numbers
-		const byteValues = Array.from(bytes);
-
-		// Convert array of numbers to string representation
-		return String.fromCharCode.apply(null, byteValues);
+		return hexString;
 	}
 
 	/**
@@ -182,12 +178,11 @@ export class DidService {
 	}
 
 	/**
-	 * Given a JSON variable, already converted to string, creates the
-	 * corresponding URI transforming the given string in base 64.
+	 * Given a JSON variable as hexadecimal string, creates a corresponding URI.
 	 */
 	jsonToURI(json: string): string {
 
-		const uri = 'did/json;base64,' + btoa(json);
+		const uri = 'did/json;base16,' + json;	//btoa(json) for base 64
 
 		// Byte conversion
 		return this.jsonToBytes(uri);

@@ -157,19 +157,18 @@ export class DidComponent implements OnInit {
 			this.transaction['URI'] = this.didService.jsonToURI(
 																	this.transaction['Data']);
 
-			//const transaction = await client.autofill(this.transaction);
+			console.log(this.transaction);
 
 			// Submitting transation
-			const result = await client.submitAndWait(
-											this.transaction, { 
+			const result = await client.submit(this.transaction, { 
 												autofill: true, 
 												wallet: this.wallet 
 											});
 			console.log(result);
 		} catch(error: any) {
-			console.error('Error: ', error.message);
+			console.error('Error:', error.message);
+			alert('Error: ' + error.message);
 		}
-
 
 		// Disconnecting from client
 		client.disconnect();
