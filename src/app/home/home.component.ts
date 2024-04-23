@@ -14,7 +14,7 @@ import { WalletService } from '../services/wallet.service';
 })
 export class HomeComponent {
 	
-	readonly net = 'wss://s.altnet.rippletest.net:51233';
+	readonly net = 'wss://s.devnet.rippletest.net:51233/';
 
 	constructor(
 		private router: Router, 
@@ -37,10 +37,10 @@ export class HomeComponent {
 		// Retrieving seed
 		const seed = <HTMLInputElement> document.getElementById('seed');
 		//Example: 
-		//- Address 				rpkQ3shLpbNXBCiSvFMwpZNUVURvtL9pCY
-		//- Secret					sEdVYN6svVKbJFmceerYLN1JRqCaMyz
+		//- Address 				rNScgFE77SuKUEo7d1cFJB7zJTGQTYFba1
+		//- Secret					sEdTNHE5mSNPnUfvQm5uKXo3YUWf9hk
 		//- Balance					100 XRP
-		//- Sequence Number	58963
+		//- Sequence Number	96720
 
 		// Connecting to Client
 		const client = new Client(this.net);

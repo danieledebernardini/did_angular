@@ -15,7 +15,7 @@ import { WalletService } from '../services/wallet.service';
 })
 export class DidComponent implements OnInit {
 	
-	readonly net = 'wss://s.altnet.rippletest.net:51233';
+	readonly net = 'wss://s.devnet.rippletest.net:51233/';
 	
 	wallet: any;
 	balance: any;
@@ -47,8 +47,8 @@ export class DidComponent implements OnInit {
 		this.transaction = this.didService.getTransaction();
 		
 		// Static setters
-		this.didDoc.id = "did:xrpl:1:" + this.wallet.classicAddress;
-		//this.didDoc.publicKey.id = "did:xrpl:1:" + this.wallet.classicAddress;
+		this.didDoc.id = "did:xrpl:2:" + this.wallet.classicAddress;
+		//this.didDoc.publicKey.id = "did:xrpl:2:" + this.wallet.classicAddress;
 		this.transaction['Account'] = this.wallet.classicAddress;
 
 		// Dynamic setters
@@ -114,7 +114,7 @@ export class DidComponent implements OnInit {
 		await this.didService.requestDid(client, this.wallet.classicAddress);
 		
 		// Setting did
-		this.did = "did:xrpl:1:" + this.wallet.classicAddress;
+		this.did = "did:xrpl:2:" + this.wallet.classicAddress;
 	}
 
 	/**
@@ -154,7 +154,7 @@ export class DidComponent implements OnInit {
 	/**
 	 * Fills the DiD Document and returns it as a string. The created document
 	 * follows the specification suggested in 'https://www.w3.org/TR/did-core'.
-	 * NB: NetworkID is set to '1' since we are working on the Testnet (see
+	 * NB: NetworkID is set to '2' since we are working on the Devnet (see
 	 * xrpl.org/docs/references/protocol/transactions/common-fields/#networkid-field)
 	 * Input:
 	 * - type: string. The type of operation which the document refers to; can be
@@ -209,15 +209,21 @@ export class DidComponent implements OnInit {
 			this.transaction['URI'] = this.didService.jsonToURI(
 																	this.transaction['Data']);
 
-			//const transaction = await client.autofill(this.transaction);
-			//const signedTransaction = this.wallet.sign(transaction);
-
 			// Submitting transation
-			const result = await client.submitAndWait(this.transaction, { 
+			const result = await client.submit(this.transaction, { 
 												autofill: true, 
 												wallet: this.wallet 
 											});
-			//const result = await client.submitAndWait(signedTransaction.tx_blob);
+			/*
+			const result = await client.submitAndWait(
+					{
+						TransactionType: 'Payment',
+				    Account: this.wallet.classicAddress,
+				    Destination: 'rnoMjXTZ8mC3vPLt5FLyUpnbmc6a1NY2Sa',
+				    Amount: '10'
+					}, {autofill: true, wallet: this.wallet}
+				);
+			*/
 			console.log(result);
 
 			// Refreshing balance

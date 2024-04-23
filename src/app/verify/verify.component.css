@@ -1,0 +1,61 @@
+.container {
+	width: 80%;
+	margin: auto;
+	padding: 20px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+.form-row {
+	margin-bottom: 20px;
+	display: flex;
+	flex-wrap: wrap;
+}
+.form-group {
+	flex: 1;
+	margin-right: 10px;
+}
+.form-group:last-child {
+	margin-right: 0;
+}
+
+input[type="text"],
+input[type="date"],
+select {
+	width: 100%;
+	padding: 8px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+input:invalid:not([disabled]), select:invalid:not([disabled]) {
+	border-color: red;
+}
+
+button {
+	padding: 10px 20px;
+	background-color: #007bff;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	opacity: 80%;
+}
+button:hover {
+	opacity: 100%;
+}
+button:disabled {
+	background-color: #dcdcdc;
+	cursor: not-allowed;
+}
+.set {
+	background-color: #0056b3;
+}
+.delete {
+	background-color: red;
+}
+.logout {
+	background-color: darkgray;
+}
