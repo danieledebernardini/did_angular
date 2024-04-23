@@ -22,6 +22,13 @@ export class HomeComponent {
 	) {}
 
 	/**
+	 * Implements page redirection to specified address.
+	 */
+	goTo(address: string) {
+		this.router.navigateByUrl(address);
+	}
+
+	/**
 	 * After reading the input 'seed', tries to connect to the corresponding
 	 * wallet, and redirects to DidComponent if possible.
 	 */
@@ -44,7 +51,7 @@ export class HomeComponent {
 			const wallet = Wallet.fromSeed(seed.value);
 			this.walletService.setWallet(wallet);
 
-			this.router.navigateByUrl('/did');
+			this.goTo('/did');
 		} catch(e) {
 			alert(e);
 		}
