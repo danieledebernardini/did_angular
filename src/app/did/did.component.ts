@@ -126,7 +126,6 @@ export class DidComponent implements OnInit {
 
 		// Anagraphic form
 		const form = <HTMLFormElement> document.getElementById('anagraphic');
-		const isValid = form.checkValidity();
 
 		// Checking form's validity
 		if(!form.checkValidity()) {
