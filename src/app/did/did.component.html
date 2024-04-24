@@ -47,13 +47,13 @@
 		</div>
 	</form>
 
-	<button (click)="setDid()" class="set" id="genDid">
+	<button (click)="setDid($event)" class="set" id="genDid">
 		Generate DiD
 	</button>
 
 	<hr><!-------------------------------------------------------------------->
 
-	<button (click)="deleteDid()" class="delete" id="delDid">
+	<button (click)="deleteDid($event)" class="delete" id="delDid">
 		Delete DiD
 	</button>
 	<button (click)="logout()" class="logout">

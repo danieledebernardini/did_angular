@@ -195,7 +195,11 @@ export class DidComponent implements OnInit {
 	/**
 	 * Implementation of the DIDSet transation. 
 	 */
-	async setDid() {
+	async setDid(event: any) {
+
+		// Disabling button
+		const genButton = event.currentTarget;
+		genButton.disabled = true;
 		
 		// Connecting to Client
 		const client = new Client(this.net);
@@ -238,7 +242,11 @@ export class DidComponent implements OnInit {
 	/**
 	 * Implementation of the DIDDelete transaction.
 	 */
-	async deleteDid() {
+	async deleteDid(event: any) {
+
+		// Disabling button
+		const delButton = event.currentTarget;
+		delButton.disabled = true;
 		
 		// Connecting to Client
 		const client = new Client(this.net);
