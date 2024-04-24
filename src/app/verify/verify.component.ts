@@ -96,6 +96,20 @@ export class VerifyComponent implements OnInit {
 	 */
 	clearFields() {
 
+		// Getting input fields
+		const did = <HTMLInputElement> document.getElementById('did');
+		const name = <HTMLInputElement> document.getElementById('name');
+		const surname = <HTMLInputElement> document.getElementById('surname');
+		const dob = <HTMLInputElement> document.getElementById('dob');
+		const place = <HTMLInputElement> document.getElementById('place');
+		const country = <HTMLInputElement> document.getElementById('country');
+
+		did.value = '';
+		name.value = '';
+		surname.value = '';
+		dob.value = '';
+		place.value = '';
+		country.value = '';
 	}
 
 	/**
