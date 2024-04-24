@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { Client } from 'xrpl';
 import { DidService } from '../services/did.service';
 
 @Component({
@@ -68,7 +69,26 @@ export class VerifyComponent implements OnInit {
 	 * Checks if did and data are nonempty.
 	 */
 	isValidForm(): boolean {
-		return true;
+
+		// Anagraphic form
+		const form = <HTMLFormElement> document.getElementById('anagraphic');
+
+		// Checking if no field has been filled
+		const pob = this.data.anagraphic['birth'][1].split(', ');
+		const place = pob[0];
+		const country = pob[pob.length-1];	//Ensuring no comma in place field can
+																				//affect this
+		
+		const isEmpty = (this.data.anagraphic['name'] === '') &&
+										(this.data.anagraphic['surname'] === '') &&
+										(this.data.anagraphic['birth'][0] === '') &&
+										(place === '') && (country === '');
+
+		const isValid = form.checkValidity() && !isEmpty; //true if did is filled
+																											//and at least one other
+																											//input is nonempty
+
+		return isValid;
 	}
 
 	/**
@@ -81,23 +101,52 @@ export class VerifyComponent implements OnInit {
 	/**
 	 * Performs the verification of given data w.r.t. provided DiD.
 	 */
-	async verify() {
+	async verify(client: any) {
 
 		// Filling this.did and this.data
 		this.getFields();
 		console.log(this.did);
 		console.log(this.data);
 
-		try{
+		// Checking input fields' validity
+		if(!this.isValidForm()) {
+			throw new Error(
+				'DiD field must be filled and at least ' + 
+				'one of the other inputs must be nonempty.'
+			);
+		}
 
-			// Checking input fields' validity
-			if(this.isValidForm()) {
-				//...
-			}
+		// Clearing fields
+		this.clearFields();
+	}
+
+	/**
+	 * Wrapper function for varificaion purposes.
+	 */
+	async verifyDid(event: any) {
+
+		// Disabling button
+		const genButton = event.currentTarget;
+		genButton.disabled = true;
+
+		// Connecting to Client
+		const client = new Client(this.net);
+		await client.connect();
+		console.log('Client connected...');
+
+		try {
+			await this.verify(client);
 		} catch(error: any) {
 			console.error('Error:', error.message);
 			alert('Error: ' + error.message);
 		}
+
+		// Disconnecting from client
+		client.disconnect();
+		console.log('...Client disconnected.');
+
+		// Enabling button
+		genButton.disabled = false;
 	}
 
 	back() {
