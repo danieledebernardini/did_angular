@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { hexToBytes, stringToHex } from '@xrplf/isomorphic/utils';
+import { hexToBytes, hexToString, stringToHex } from '@xrplf/isomorphic/utils';
 //import { gzip, inflate } from 'pako';
 
 
@@ -130,6 +130,21 @@ export class DidService {
 		}
 
 		return hexString;
+	}
+
+	/**
+	 * Given a hexadecimal string representing a JSON variable, returns its
+	 * originating JSON variable.
+	 */
+	bytesToJson(hex: string): any {
+
+		// Convert hexadecimal string to hexadecimal string
+		const jsonString = hexToString(hex);
+
+		// Parsing string
+		const json = JSON.parse(jsonString);
+
+		return json;
 	}
 
 	/**

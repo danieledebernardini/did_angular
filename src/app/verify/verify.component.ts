@@ -74,15 +74,16 @@ export class VerifyComponent implements OnInit {
 		const form = <HTMLFormElement> document.getElementById('anagraphic');
 
 		// Checking if no field has been filled
-		const pob = this.data.anagraphic['birth'][1].split(', ');
-		const place = pob[0];
-		const country = pob[pob.length-1];	//Ensuring no comma in place field can
+		//const pob = this.data.anagraphic['birth'][1].split(', ');
+		//const place = pob[0];
+		//const country = pob[pob.length-1];	//Ensuring no comma in place field can
 																				//affect this
 		
 		const isEmpty = (this.data.anagraphic['name'] === '') &&
 										(this.data.anagraphic['surname'] === '') &&
 										(this.data.anagraphic['birth'][0] === '') &&
-										(place === '') && (country === '');
+										(this.data.anagraphic['birth'][1] === ', ');
+										//(place === '') && (country === '');
 
 		const isValid = form.checkValidity() && !isEmpty; //true if did is filled
 																											//and at least one other
@@ -113,14 +114,11 @@ export class VerifyComponent implements OnInit {
 	}
 
 	/**
-	 * Performs the verification of given data w.r.t. provided DiD.
+	 * Performs the verification of given data w.r.t. provided DiD. That is,
+	 * extracts the nonempty fields in this.data and check the correspondence
+	 * w.r.t. the given did data.
 	 */
-	async verify(client: any) {
-
-		// Filling this.did and this.data
-		this.getFields();
-		console.log(this.did);
-		console.log(this.data);
+	async verify(client: any): Promise<boolean> {
 
 		// Checking input fields' validity
 		if(!this.isValidForm()) {
@@ -130,8 +128,29 @@ export class VerifyComponent implements OnInit {
 			);
 		}
 
-		// Clearing fields
-		this.clearFields();
+		// DiD request
+		const address = this.did.replace('did:xrpl:2:', '');
+		const didRequest = await this.didService.requestDid(client, address);
+
+		// DiD data
+		const did = didRequest.result['node'];
+		const didData = this.didService.bytesToJson(did['Data']);
+
+		// Verifying correspondence of nonempty fields
+		const checkArray = [
+				(this.data.anagraphic['name'] === '') ||
+					(this.data.anagraphic['name'] === didData.anagraphic['name']),
+				(this.data.anagraphic['surname'] === '') ||
+					(this.data.anagraphic['surname'] === didData.anagraphic['surname']),
+				(this.data.anagraphic['birth'][0] === '') ||
+					(this.data.anagraphic['birth'][0] === didData.anagraphic['birth'][0]),
+				didData.anagraphic['birth'][1].includes(this.data.anagraphic['birth'][1])
+			];
+		console.log('checkArray = '+checkArray);
+		const isVerified = checkArray.reduce((ver, bool) => ver && bool, true);
+		console.log('isVerified = '+isVerified);
+
+		return isVerified;
 	}
 
 	/**
@@ -149,7 +168,15 @@ export class VerifyComponent implements OnInit {
 		console.log('Client connected...');
 
 		try {
-			await this.verify(client);
+
+			// Filling this.did and this.data
+			this.getFields();
+			
+			// Getting verification result
+			const result = await this.verify(client);
+
+			// Clearing fields
+			this.clearFields();
 		} catch(error: any) {
 			console.error('Error:', error.message);
 			alert('Error: ' + error.message);
