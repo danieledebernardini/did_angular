@@ -47,6 +47,21 @@ export class VerifyComponent implements OnInit {
 	 */
 	getFields() {
 
+		// Getting input fields
+		const did = <HTMLInputElement> document.getElementById('did');
+		const name = <HTMLInputElement> document.getElementById('name');
+		const surname = <HTMLInputElement> document.getElementById('surname');
+		const dob = <HTMLInputElement> document.getElementById('dob');
+		const place = <HTMLInputElement> document.getElementById('place');
+		const country = <HTMLInputElement> document.getElementById('country');
+
+		// Setting values
+		this.did = did.value;
+		this.data.anagraphic = {
+				name: name.value,
+				surname: surname.value,
+				birth: [dob.value, place.value + ', ' + country.value]
+			};
 	}
 
 	/**
@@ -70,6 +85,8 @@ export class VerifyComponent implements OnInit {
 
 		// Filling this.did and this.data
 		this.getFields();
+		console.log(this.did);
+		console.log(this.data);
 
 		try{
 
