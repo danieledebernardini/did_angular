@@ -146,10 +146,8 @@ export class VerifyComponent implements OnInit {
 					(this.data.anagraphic['birth'][0] === didData.anagraphic['birth'][0]),
 				didData.anagraphic['birth'][1].includes(this.data.anagraphic['birth'][1])
 			];
-		console.log('checkArray = '+checkArray);
 		const isVerified = checkArray.reduce((ver, bool) => ver && bool, true);
-		console.log('isVerified = '+isVerified);
-
+		
 		return isVerified;
 	}
 
@@ -174,6 +172,10 @@ export class VerifyComponent implements OnInit {
 			
 			// Getting verification result
 			const result = await this.verify(client);
+			const outcome = result 
+											? 'Success, data corresponds to given DiD!' 
+											: 'Error, some data don not correspond to the given DiD';
+			alert(outcome);
 
 			// Clearing fields
 			this.clearFields();
