@@ -78,3 +78,6 @@ button:disabled {
 .logout {
 	background-color: darkgray;
 }
+p{
+	font-family: sans-serif;
+}

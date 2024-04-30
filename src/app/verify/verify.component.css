@@ -61,3 +61,6 @@ button:disabled {
 .back {
 	background-color: darkgray;
 }
+p{
+	font-family: sans-serif;
+}
