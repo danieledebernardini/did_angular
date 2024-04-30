@@ -1,5 +1,24 @@
+<div class= "top-container" >
+	<div class="content" style="background-color: #aab2ff; text-align: center;">
+		<hr>
+		<p>
+			Generiche informazioni descrittive su cos'è un DiD.
+		</p>
+		<hr>
+	</div>
+</div>
 <div class="container">
-	<div class="content">
+	<div class="content" style="background-color: #84ffc9;">
+		<h2>
+			DID Handler
+		</h2>
+		<p>
+			This side allows the creation and deletion of a decentralized identifier.
+		</p>
+		<p>
+			This should be done locally (e.g. within a wallet), since it requires the secret seed of the user's account.
+		</p>
+		<hr>
 		<label for="seed" class="label">
 			Enter your XRPL seed:
 		</label>
@@ -9,19 +28,25 @@
 			name="seed"
 			class="input"
 		>
+		<p>
+			<button 
+				(click)="getAccount()"
+				class="button"
+			>
+				Connect
+			</button>
+		</p>
 	</div>
-	<div class="content">
-		<button 
-			(click)="getAccount()"
-			class="button"
-		>
-			Connect
-		</button>
-	</div>
+	
 
-	<hr><!-------------------------------------------------------------------->
+	<!-------------------------------------------------------------------->
 
-	<div class="content">
+	<div class="content" style="background-color: #eca0ff;">
+		<h2>DID Verifier</h2>
+		<p>
+			This side allows the verification of a decentralized identifier.
+		</p>
+		<hr>
 		<button 
 			(click)="goTo('/verify')"
 			class="button"
