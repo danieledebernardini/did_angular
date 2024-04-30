@@ -4,11 +4,13 @@ hr {
 
 .container {
 	display: flex;
-	flex-direction: column;
+	height: 100vh;
+	/*flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	text-align: center;
+	text-align: center;*/
 }
+
 
 .title {
 	font-size: 24px;
@@ -16,7 +18,8 @@ hr {
 }
 
 .content {
-	margin-bottom: 15px;
+	padding: 35px;
+	flex: 1;
 }
 
 .label {
@@ -42,4 +45,8 @@ hr {
 
 .button:hover {
 	background-color: #0056b3;
+}
+
+p{
+	font-family: sans-serif;
 }

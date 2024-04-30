@@ -1,7 +1,28 @@
+<div class= "top-container" >
+	<div class="content" style="background-color: #aab2ff; text-align: center;">
+		<hr>
+		<p>
+			This site allows user to deploy, verify and delete <a href="https://www.w3.org/TR/did-core/"> decentralized identifiers </a> on the XRPL devnet.  
+		</p>
+		<hr>
+	</div>
+</div>
 <div class="container">
-	<div class="content">
+	<div class="content" style="background-color: #84ffc9;">
+		<h2>
+			DID Handler
+		</h2>
+		<p >
+			Any owner of an XRPL account can issue their decentralized identifier.
+		</p>
+		<p>
+			This is just a demo: the generation of a decentralized identifier should be done locally 
+			(e.g. within a wallet), since it requires the secret seed of the user's account.
+
+		</p>
+		<hr>
 		<label for="seed" class="label">
-			Enter your XRPL seed:
+			Enter the seed of your XRPL devnet account:
 		</label>
 		<input
 			type="text"
@@ -9,19 +30,28 @@
 			name="seed"
 			class="input"
 		>
+		<p>
+			<button 
+				(click)="getAccount()"
+				class="button"
+			>
+				Connect
+			</button>
+		</p>
 	</div>
-	<div class="content">
-		<button 
-			(click)="getAccount()"
-			class="button"
-		>
-			Connect
-		</button>
-	</div>
+	
 
-	<hr><!-------------------------------------------------------------------->
+	<!-------------------------------------------------------------------->
 
-	<div class="content">
+	<div class="content" style="background-color: #eca0ff;">
+		<h2>DID Verifier</h2>
+		<p>
+			Anyone can check whether a decentralized identifier matches with some identifying information.
+		</p>
+		<p>
+			After creating your DID you can test them from here.
+		</p>
+		<hr>
 		<button 
 			(click)="goTo('/verify')"
 			class="button"

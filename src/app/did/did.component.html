@@ -1,4 +1,19 @@
 <div class="container">
+	<div class="content">
+	<h3> DID Generation and Deletion</h3>
+	<p>
+		From this page you can create or delete a decentralized identifier linked to your account.
+	</p>
+	<p>
+		To create a DID you must fill in all the fields of the form, then click the "Create DID" button.
+		Upon doing so, the page will update, showing a change in the balance of your account (due to the payed fees) and your decentralized identifier.
+		<br>
+		If you access this page but you already have a DID then the form will be disabled, and the "Delete DID" button will become enabled
+	</p>
+	<p> 
+		Remember to save the generated DID before you log out, so you can test it in the <a href="./verify">verification page</a>. 
+	</p>
+	<hr>
 	<p> 
 		Address: <b> {{wallet.classicAddress}} </b>
 	</p>
@@ -48,15 +63,16 @@
 	</form>
 
 	<button (click)="setDid($event)" class="set" id="genDid">
-		Generate DiD
+		Generate DID
 	</button>
 
 	<hr><!-------------------------------------------------------------------->
 
 	<button (click)="deleteDid($event)" class="delete" id="delDid">
-		Delete DiD
+		Delete DID
 	</button>
 	<button (click)="logout()" class="logout">
 		Logout
 	</button>
+	</div>
 </div>

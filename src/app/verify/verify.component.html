@@ -1,60 +1,70 @@
-<div class="container">
-	<form id="anagraphic">
-		<div class="form-row">
-			<div class="form-group">
-				<label for="did"> DiD: </label>
-				<input 
-					type="text"
-					id="did"
-					name="did"
-					placeholder="did:xrpl:2:example" 
-					required
-				>
+<div class="container" style="background-color: #aab2ff;">
+	<div class="content">
+		<h3> DID Verification</h3>
+		<p>
+			From this page you can check if the informations provided in the field match with the decentralized identifier.
+		</p>
+		<p>
+			You may choose to leave blank some fields of the form: this is because DIDs allow the <i>selective disclosure</i> of information. 
+			The validity of the identifier will only be checked against the field that have been compiled.
+		</p>
+		<form id="anagraphic">
+			<div class="form-row">
+				<div class="form-group">
+					<label for="did"> DiD: </label>
+					<input 
+						type="text"
+						id="did"
+						name="did"
+						placeholder="did:xrpl:2:example" 
+						required
+					>
+				</div>
 			</div>
-		</div>
 
-		<div class="form-row">
-			<div class="form-group">
-				<label for="name"> Name: </label>
-				<input type="text" id="name" name="name">
+			<div class="form-row">
+				<div class="form-group">
+					<label for="name"> Name: </label>
+					<input type="text" id="name" name="name">
+				</div>
+				<div class="form-group">
+					<label for="surname"> Surname: </label>
+					<input type="text" id="surname" name="surname">
+				</div>
 			</div>
-			<div class="form-group">
-				<label for="surname"> Surname: </label>
-				<input type="text" id="surname" name="surname">
+
+			<div class="form-row">
+				<div class="form-group">
+					<label for="dob"> Date of Birth: </label>
+					<input type="date" id="dob" name="dob">
+				</div>
 			</div>
-		</div>
 
-		<div class="form-row">
-			<div class="form-group">
-				<label for="dob"> Date of Birth: </label>
-				<input type="date" id="dob" name="dob">
+			<div class="form-row">
+				<div class="form-group">
+					<label for="place"> Place of Birth: </label>
+					<input type="text" id="place" name="place">
+				</div>
+				<div class="form-group">
+					<label for="country"> Country: </label>
+					<select id="country" name="country">
+						<option value=""> Select Country </option>
+						<option value="IT"> Italy </option>
+						<option value="UK"> United Kingdom </option>
+						<!-- Add more countries... -->
+					</select>
+				</div>
 			</div>
-		</div>
+		</form>
 
-		<div class="form-row">
-			<div class="form-group">
-				<label for="place"> Place of Birth: </label>
-				<input type="text" id="place" name="place">
-			</div>
-			<div class="form-group">
-				<label for="country"> Country: </label>
-				<select id="country" name="country">
-					<option value=""> Select Country </option>
-					<option value="IT"> Italy </option>
-					<option value="UK"> United Kingdom </option>
-					<!-- Add more countries... -->
-				</select>
-			</div>
-		</div>
-	</form>
+		<button (click)="verifyDid($event)" class="verify">
+			Verify
+		</button>
 
-	<button (click)="verifyDid($event)" class="verify">
-		Verify
-	</button>
+		<hr><!-------------------------------------------------------------------->
 
-	<hr><!-------------------------------------------------------------------->
-
-	<button (click)="back()" class="back">
-		Back
-	</button>
+		<button (click)="back()" class="back">
+			Back
+		</button>
+	</div>
 </div>

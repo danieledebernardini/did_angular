@@ -1,9 +1,14 @@
 .container {
+	background-color: #aab2ff;
+	padding-bottom: 40px;
+}
+.content{
 	width: 80%;
 	margin: auto;
 	padding: 20px;
-	border: 1px solid #ccc;
+	border: 1px solid black;
 	border-radius: 5px;
+	background-color: #eca0ff;
 }
 
 .form-row {
@@ -55,4 +60,7 @@ button:disabled {
 }
 .back {
 	background-color: darkgray;
+}
+p{
+	font-family: sans-serif;
 }
